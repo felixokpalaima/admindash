@@ -26,22 +26,22 @@ jobs:
       - uses: actions/checkout@v3
       - name: Define Env Variables
         run: |
-            echo "IMAGE_TAG=ghcr.io/${{ github.repository_owner }}/admindash:${{ github.sha }}" >> $GITHUB_ENV
-            echo "CONTAINER_NAME=${{ secrets.CONTAINER_NAME }}" >> $GITHUB_ENV
-            echo "APP_NAME=${{ secrets.APP_NAME }}" >> $GITHUB_ENV
-            echo "PORT=${{ secrets.PORT }}" >> $GITHUB_ENV
-            echo "VERSION=${{ github.sha }}" >> $GITHUB_ENV"
-            echo "DB_CONN_STRINGS=${{ secrets.DB_CONN_STRINGS }}" >> $GITHUB_ENV
-            echo "JWT_PUB_KEY=${{ secrets.JWT_PUB_KEY }}" >> $GITHUB_ENV
-            echo "TOTP_SECRET=${{ secrets.TOTP_SECRET }}" >> $GITHUB_ENV
-            echo "CONTAINER_NAME=${{ secrets.CONTAINER_NAME }}" >> $GITHUB_ENV
-            echo "BASE_URLS=${{ secrets.BASE_URLS }}" >> $GITHUB_ENV
-            echo "SLACK_TOKEN=${{ secrets.SLACK_TOKEN }}" >> $GITHUB_ENV
-            echo "CHANNEL_ID=${{ secrets.CHANNEL_ID }}" >> $GITHUB_ENV
-            echo "MEILI_CONFIG=${{ secrets.MEILI_CONFIG }}" >> $GITHUB_ENV
-            echo "INDEX_MODIFIERS=${{ secrets.INDEX_MODIFIERS }}" >> $GITHUB_ENV
-            echo "TXN_TYPE_MAP=${{ secrets.TXN_TYPE_MAP }}" >> $GITHUB_ENV
-            echo "BIZ_ACCOUNT_MAP=${{ secrets.BIZ_ACCOUNT_MAP }}" >> $GITHUB_ENV
+            echo 'IMAGE_TAG=ghcr.io/${{ github.repository_owner }}/admindash:${{ github.sha }}' >> $GITHUB_ENV
+            echo 'CONTAINER_NAME=${{ secrets.CONTAINER_NAME }}' >> $GITHUB_ENV
+            echo 'APP_NAME=${{ secrets.APP_NAME }}' >> $GITHUB_ENV
+            echo 'PORT=${{ secrets.PORT }}' >> $GITHUB_ENV
+            echo 'VERSION=${{ github.sha }}' >> $GITHUB_ENV"
+            echo 'DB_CONN_STRINGS=${{ secrets.DB_CONN_STRINGS }}' >> $GITHUB_ENV
+            echo 'JWT_PUB_KEY=${{ secrets.JWT_PUB_KEY }}' >> $GITHUB_ENV
+            echo 'TOTP_SECRET=${{ secrets.TOTP_SECRET }}' >> $GITHUB_ENV
+            echo 'CONTAINER_NAME=${{ secrets.CONTAINER_NAME }}' >> $GITHUB_ENV
+            echo 'BASE_URLS=${{ secrets.BASE_URLS }}' >> $GITHUB_ENV
+            echo 'SLACK_TOKEN=${{ secrets.SLACK_TOKEN }}' >> $GITHUB_ENV
+            echo 'CHANNEL_ID=${{ secrets.CHANNEL_ID }}' >> $GITHUB_ENV
+            echo 'MEILI_CONFIG=${{ secrets.MEILI_CONFIG }}' >> $GITHUB_ENV
+            echo 'INDEX_MODIFIERS=${{ secrets.INDEX_MODIFIERS }}' >> $GITHUB_ENV
+            echo 'TXN_TYPE_MAP=${{ secrets.TXN_TYPE_MAP }}' >> $GITHUB_ENV
+            echo 'BIZ_ACCOUNT_MAP=${{ secrets.BIZ_ACCOUNT_MAP }}' >> $GITHUB_ENV
             echo "VENTOGRAM_ACCOUNT_MAP=${{ secrets.VENTOGRAM_ACCOUNT_MAP }}" >> $GITHUB_ENV
             echo "CURRENCY_MAP=${{ secrets.CURRENCY_MAP }}" >> $GITHUB_ENV
             echo "FORMAT_FIELD_NAMES=${{ secrets.FORMAT_FIELD_NAMES }}" >> $GITHUB_ENV
