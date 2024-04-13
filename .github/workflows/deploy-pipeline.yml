@@ -24,9 +24,36 @@ jobs:
     # if: github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@v3
-      - name: Define Variables
+      - name: Define Env Variables
         run: |
             echo "IMAGE_TAG=ghcr.io/${{ github.repository_owner }}/admindash:${{ github.sha }}" >> $GITHUB_ENV
+            echo "CONTAINER_NAME=${{ secrets.CONTAINER_NAME }}" >> $GITHUB_ENV
+            echo "APP_NAME=${{ secrets.APP_NAME }}" >> $GITHUB_ENV
+            echo "PORT=${{ secrets.PORT }}" >> $GITHUB_ENV
+            echo "VERSION=${{ github.sha }}" >> $GITHUB_ENV"
+            echo "DB_CONN_STRINGS=${{ secrets.DB_CONN_STRINGS }}" >> $GITHUB_ENV
+            echo "JWT_PUB_KEY=${{ secrets.JWT_PUB_KEY }}" >> $GITHUB_ENV
+            echo "TOTP_SECRET=${{ secrets.TOTP_SECRET }}" >> $GITHUB_ENV
+            echo "CONTAINER_NAME=${{ secrets.CONTAINER_NAME }}" >> $GITHUB_ENV
+            echo "BASE_URLS=${{ secrets.BASE_URLS }}" >> $GITHUB_ENV
+            echo "SLACK_TOKEN=${{ secrets.SLACK_TOKEN }}" >> $GITHUB_ENV
+            echo "CHANNEL_ID=${{ secrets.CHANNEL_ID }}" >> $GITHUB_ENV
+            echo "MEILI_CONFIG=${{ secrets.MEILI_CONFIG }}" >> $GITHUB_ENV
+            echo "INDEX_MODIFIERS=${{ secrets.INDEX_MODIFIERS }}" >> $GITHUB_ENV
+            echo "TXN_TYPE_MAP=${{ secrets.TXN_TYPE_MAP }}" >> $GITHUB_ENV
+            echo "BIZ_ACCOUNT_MAP=${{ secrets.BIZ_ACCOUNT_MAP }}" >> $GITHUB_ENV
+            echo "VENTOGRAM_ACCOUNT_MAP=${{ secrets.VENTOGRAM_ACCOUNT_MAP }}" >> $GITHUB_ENV
+            echo "CURRENCY_MAP=${{ secrets.CURRENCY_MAP }}" >> $GITHUB_ENV
+            echo "FORMAT_FIELD_NAMES=${{ secrets.FORMAT_FIELD_NAMES }}" >> $GITHUB_ENV
+            echo "BIZ_TXN_MAP=${{ secrets.BIZ_TXN_MAP }}" >> $GITHUB_ENV
+            echo "VENTOGRAM_TRANSACTION_MAP=${{ secrets.VENTOGRAM_TRANSACTION_MAP }}" >> $GITHUB_ENV
+            echo "FUSION_AUTH_BASE_URL=${{ secrets.FUSION_AUTH_BASE_URL }}" >> $GITHUB_ENV
+            echo "FUSION_AUTH_ADMIN_API_KEY=${{ secrets.FUSION_AUTH_ADMIN_API_KEY }}" >> $GITHUB_ENV
+            echo "FUSION_AUTH_ADMIN_TENANT_ID=${{ secrets.FUSION_AUTH_ADMIN_TENANT_ID }}" >> $GITHUB_ENV
+            echo "FUSION_AUTH_ADMIN_APPLICATION_ID=${{ secrets.FUSION_AUTH_ADMIN_APPLICATION_ID }}" >> $GITHUB_ENV
+            echo "FUSION_AUTH_COINPROFILE_API_KEY=${{ secrets.FUSION_AUTH_COINPROFILE_API_KEY }}" >> $GITHUB_ENV
+            echo "FUSION_AUTH_COINPROFILE_TENANT_ID=${{ secrets.FUSION_AUTH_COINPROFILE_TENANT_ID }}" >> $GITHUB_ENV
+            echo "FUSION_AUTH_COINPROFILE_APPLICATION_ID=${{ secrets.FUSION_AUTH_COINPROFILE_APPLICATION_ID }}" >> $GITHUB_ENV
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
         with:
@@ -34,6 +61,34 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ghcr.io
       - name: Build and push Docker image
+        env:
+          CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}
+          APP_ENV: ${{ secrets.APP_ENV }}
+          PORT: ${{ secrets.PORT }}
+          APP_NAME: ${{ secrets.APP_NAME }}
+          VERSION: ${{ github.sha }}
+          DB_CONN_STRINGS: ${{ secrets.DB_CONN_STRINGS }}
+          JWT_PUB_KEY: ${{ secrets.JWT_PUB_KEY }}
+          TOTP_SECRET: ${{ secrets.TOTP_SECRET }}
+          BASE_URLS: ${{ secrets.BASE_URLS }}
+          SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
+          CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
+          MEILI_CONFIG: ${{ secrets.MEILI_CONFIG }}
+          INDEX_MODIFIERS: ${{ secrets.INDEX_MODIFIERS }}
+          TXN_TYPE_MAP: ${{ secrets.TXN_TYPE_MAP }}
+          BIZ_ACCOUNT_MAP: ${{ secrets.BIZ_ACCOUNT_MAP }}
+          VENTOGRAM_ACCOUNT_MAP: ${{ secrets.VENTOGRAM_ACCOUNT_MAP }}
+          CURRENCY_MAP: ${{ secrets.CURRENCY_MAP }}
+          FORMAT_FIELD_NAMES: ${{ secrets.FORMAT_FIELD_NAMES }}
+          BIZ_TXN_MAP: ${{ secrets.BIZ_TXN_MAP }}
+          VENTOGRAM_TRANSACTION_MAP: ${{ secrets.VENTOGRAM_TRANSACTION_MAP }}
+          FUSION_AUTH_BASE_URL: ${{ secrets.FUSION_AUTH_BASE_URL }}
+          FUSION_AUTH_ADMIN_API_KEY: ${{ secrets.FUSION_AUTH_ADMIN_API_KEY }}
+          FUSION_AUTH_ADMIN_TENANT_ID: ${{ secrets.FUSION_AUTH_ADMIN_TENANT_ID }}
+          FUSION_AUTH_ADMIN_APPLICATION_ID: ${{ secrets.FUSION_AUTH_ADMIN_APPLICATION_ID }}
+          FUSION_AUTH_COINPROFILE_API_KEY: ${{ secrets.FUSION_AUTH_COINPROFILE_API_KEY }}
+          FUSION_AUTH_COINPROFILE_TENANT_ID: ${{ secrets.FUSION_AUTH_COINPROFILE_TENANT_ID }}
+          FUSION_AUTH_COINPROFILE_APPLICATION_ID: ${{ secrets.FUSION_AUTH_COINPROFILE_APPLICATION_ID }}
         run: |
           docker compose -f ./deployment/docker-compose.yml build admindashbuild
           docker tag admindashbuild ghcr.io/${{ github.repository_owner }}/admindash:${{ github.sha }}
