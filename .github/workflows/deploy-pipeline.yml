@@ -30,7 +30,7 @@ jobs:
             echo 'CONTAINER_NAME=${{ secrets.CONTAINER_NAME }}' >> $GITHUB_ENV
             echo 'APP_NAME=${{ secrets.APP_NAME }}' >> $GITHUB_ENV
             echo 'PORT=${{ secrets.PORT }}' >> $GITHUB_ENV
-            echo 'VERSION=${{ github.sha }}' >> $GITHUB_ENV"
+            echo 'VERSION=${{ github.sha }}' >> $GITHUB_ENV
             echo 'DB_CONN_STRINGS=${{ secrets.DB_CONN_STRINGS }}' >> $GITHUB_ENV
             echo 'JWT_PUB_KEY=${{ secrets.JWT_PUB_KEY }}' >> $GITHUB_ENV
             echo 'TOTP_SECRET=${{ secrets.TOTP_SECRET }}' >> $GITHUB_ENV
