@@ -1,0 +1,339 @@
+{
+    "logging": {
+        "logs": {
+            "default": {
+                "writer": {
+                    "output": "stdout"
+                },
+                "encoder": {
+                    "format": "json"
+                },
+                "level": "DEBUG"
+            }
+        }
+    },
+    "apps": {
+        "http": {
+            "servers": {
+                "srv0": {
+                    "listen": [
+                        ":5000"
+                    ],
+                    "routes": [
+                        {
+                            "handle": [
+                                {
+                                    "handler": "rewrite",
+                                    "path_regexp": [
+                                        {
+                                            "find": "/(?P\u003cprname\u003e(chore|feature|feat|fix|hotfix|ft)\\-[a-z0-9\\-]+)\\-(?P\u003cservice\u003e[a-z]+)/?",
+                                            "replace": "/$service_$prname"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "match": [
+                                {
+                                    "path": [
+                                        "/$service_$prname/*"
+                                    ]
+                                }
+                            ],
+                            "handle": [
+                                {
+                                    "handler": "subroute",
+                                    "routes": [
+                                        {
+                                            "handle": [
+                                                {
+                                                    "handler": "rewrite",
+                                                    "strip_path_prefix": "/$service_$prname"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "handle": [
+                                                {
+                                                    "handler": "reverse_proxy",
+                                                    "upstreams": [
+                                                        {
+                                                            "dial": "$service_$prname:8080"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "handle": [
+                                {
+                                    "body": "staging8082 balancer is running",
+                                    "handler": "static_response"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "srv1": {
+                    "listen": [
+                        ":8080"
+                    ],
+                    "routes": [
+                        {
+                            "group": "group9",
+                            "match": [
+                                {
+                                    "path": [
+                                        "/admindash*"
+                                    ]
+                                }
+                            ],
+                            "handle": [
+                                {
+                                    "handler": "subroute",
+                                    "routes": [
+                                        {
+                                            "handle": [
+                                                {
+                                                    "handler": "rewrite",
+                                                    "strip_path_prefix": "/admindash"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "handle": [
+                                                {
+                                                    "handler": "reverse_proxy",
+                                                    "upstreams": [
+                                                        {
+                                                            "dial": "admindash:8080"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "group": "group9",
+                            "match": [
+                                {
+                                    "path": [
+                                        "/dozzle*"
+                                    ]
+                                }
+                            ],
+                            "handle": [
+                                {
+                                    "handler": "subroute",
+                                    "routes": [
+                                        {
+                                            "handle": [
+                                                {
+                                                    "handler": "rewrite",
+                                                    "strip_path_prefix": "/dozzle"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "handle": [
+                                                {
+                                                    "handler": "reverse_proxy",
+                                                    "upstreams": [
+                                                        {
+                                                            "dial": "dozzle:8080"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "group": "group9",
+                            "match": [
+                                {
+                                    "path": [
+                                        "/test/*"
+                                    ]
+                                }
+                            ],
+                            "handle": [
+                                {
+                                    "handler": "subroute",
+                                    "routes": [
+                                        {
+                                            "handle": [
+                                                {
+                                                    "handler": "rewrite",
+                                                    "strip_path_prefix": "/test"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "handle": [
+                                                {
+                                                    "body": "test2 response!",
+                                                    "handler": "static_response"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "group": "group9",
+                            "match": [
+                                {
+                                    "path": [
+                                        "/label*"
+                                    ]
+                                }
+                            ],
+                            "handle": [
+                                {
+                                    "handler": "subroute",
+                                    "routes": [
+                                        {
+                                            "handle": [
+                                                {
+                                                    "handler": "rewrite",
+                                                    "strip_path_prefix": "/label"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "handle": [
+                                                {
+                                                    "body": "label response!",
+                                                    "handler": "static_response"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "group": "group9",
+                            "match": [
+                                {
+                                    "path": [
+                                        "/test/"
+                                    ]
+                                }
+                            ],
+                            "handle": [
+                                {
+                                    "handler": "subroute",
+                                    "routes": [
+                                        {
+                                            "handle": [
+                                                {
+                                                    "handler": "rewrite",
+                                                    "strip_path_prefix": "/test/"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "handle": [
+                                                {
+                                                    "body": "test with / response!",
+                                                    "handler": "static_response"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "group": "group9",
+                            "match": [
+                                {
+                                    "path": [
+                                        "/ping"
+                                    ]
+                                }
+                            ],
+                            "handle": [
+                                {
+                                    "handler": "subroute",
+                                    "routes": [
+                                        {
+                                            "handle": [
+                                                {
+                                                    "handler": "rewrite",
+                                                    "strip_path_prefix": "/ping"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "handle": [
+                                                {
+                                                    "body": "staging pong",
+                                                    "handler": "static_response"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "group": "group9",
+                            "match": [
+                                {
+                                    "path": [
+                                        "/test"
+                                    ]
+                                }
+                            ],
+                            "handle": [
+                                {
+                                    "handler": "subroute",
+                                    "routes": [
+                                        {
+                                            "handle": [
+                                                {
+                                                    "handler": "rewrite",
+                                                    "strip_path_prefix": "/test"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "handle": [
+                                                {
+                                                    "body": "test response!",
+                                                    "handler": "static_response"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "handle": [
+                                {
+                                    "body": "staging balancer is running",
+                                    "handler": "static_response"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,35 @@
+version: "3"
+services:
+    admindashtest:
+        extends:
+            file: ./base.yml
+            service: admindashbase
+        build:
+            context: ..
+            dockerfile: ./deployment/Dockerfile
+            target: test
+        image: admindashtest
+
+    admindashbuild:
+        extends:
+            file: ./base.yml
+            service: admindashbase
+        build:
+            context: ..
+            dockerfile: ./deployment/Dockerfile
+            target: deploy
+        image: admindashbuild
+
+    admindashmain:
+        extends:
+            file: ./base.yml
+            service: admindashbase
+        image: $IMAGE_TAG
+        restart: unless-stopped
+        networks:
+            - app-network
+    
+networks:
+    app-network:
+        external: true
+        name: app_network

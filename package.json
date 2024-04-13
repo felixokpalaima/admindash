@@ -1,0 +1,45 @@
+{
+  "name": "admin_dashboard",
+  "module": "src/index.ts",
+  "type": "module",
+  "engines": {
+    "bun": ">=1.0.7"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.4",
+    "@types/luxon": "^3.4.2",
+    "@types/node-cron": "^3.0.11",
+    "@types/speakeasy": "^2.0.10",
+    "@types/uuid": "^9.0.6",
+    "bun-types": "latest",
+    "typescript": "^5.2.2"
+  },
+  "scripts": {
+    "build": "bun build",
+    "dev": "bun check & bun run prettier & bun run --hot ./src/index.ts",
+    "test": "bun test",
+    "prettier": "prettier --config .prettierrc './**/*.ts' --write",
+    "check": "bunx tsc -w",
+    "start": "bun run ./src/index.ts"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@elysiajs/cors": "^0.7.1",
+    "@elysiajs/swagger": "^0.7.3",
+    "axios": "^1.6.2",
+    "elysia": "^0.7.16",
+    "http-status-codes": "^2.3.0",
+    "jsonwebtoken": "^9.0.2",
+    "luxon": "^3.4.4",
+    "meilisearch": "^0.36.0",
+    "mongodb": "^6.1.0",
+    "mongoose": "^8.0.3",
+    "node-cron": "^3.0.3",
+    "pino": "^8.16.0",
+    "prettier": "^3.1.0",
+    "speakeasy": "^2.0.0",
+    "uuid": "^9.0.1"
+  }
+}

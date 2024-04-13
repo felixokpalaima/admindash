@@ -1,0 +1,71 @@
+name: CI/CD Pipeline to Oracle Cloud
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v3
+      - name: Docker Compose Test
+        run: |
+        #   docker compose -f ./deployment/docker-compose.yml run --rm --build admindashtest bun test
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v3
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GHCR_TOKEN }}
+          registry: ghcr.io
+      - name: Build and push Docker image
+        run: |
+          docker compose -f ./deployment/docker-compose.yml build admindashbuild
+          docker tag admindashbuild ghcr.io/${{ github.repository_owner }}/admindash:${{ github.sha }}
+          docker push ghcr.io/${{ github.repository_owner }}/admindash:${{ github.sha }}
+          docker image prune -a -f
+
+#   deploy_dev:
+#     needs: build
+#     runs-on: ubuntu-latest
+#     if: github.event_name == 'pull_request'
+#     steps:
+#       - uses: actions/checkout@v3
+#       - name: Deploy to Dev Environment
+#         run: |
+#           # Add your deployment scripts here
+#           echo "Deploying to Dev Environment"
+
+#   deploy_staging:
+#     needs: deploy_dev
+#     runs-on: ubuntu-latest
+#     if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
+#     steps:
+#       - uses: actions/checkout@v3
+#       - name: Deploy to Staging Environment
+#         run: |
+#           # Add your deployment scripts here
+#           echo "Deploying to Staging Environment"
+
+#   deploy_production:
+#     needs: deploy_staging
+#     runs-on: ubuntu-latest
+#     if: github.ref == 'refs/heads/main'
+#     steps:
+#       - uses: actions/checkout@v3
+#       - name: Deploy to Production Environment
+#         run: |
+#           # Add your deployment scripts here
+#           echo "Deploying to Production Environment"
