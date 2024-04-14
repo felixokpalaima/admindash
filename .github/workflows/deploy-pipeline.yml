@@ -21,6 +21,9 @@ jobs:
   build:
     needs: test
     runs-on: ubuntu-latest
+    permissions:
+        contents: read
+        packages: write
     # if: github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@v3
@@ -61,6 +64,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ghcr.io
       - name: Build and push Docker image
+
         env:
           CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}
           APP_ENV: ${{ secrets.APP_ENV }}
