@@ -90,6 +90,7 @@ jobs:
           FUSION_AUTH_COINPROFILE_TENANT_ID: ${{ secrets.FUSION_AUTH_COINPROFILE_TENANT_ID }}
           FUSION_AUTH_COINPROFILE_APPLICATION_ID: ${{ secrets.FUSION_AUTH_COINPROFILE_APPLICATION_ID }}
         run: |
+          docker login ghcr.io -u USERNAME -p ${{ secrets.GITHUB_TOKEN }}
           docker compose -f ./deployment/docker-compose.yml build admindashbuild
           docker tag admindashbuild ghcr.io/${{ github.repository_owner }}/admindash:${{ github.sha }}
           docker push ghcr.io/${{ github.repository_owner }}/admindash:${{ github.sha }}
